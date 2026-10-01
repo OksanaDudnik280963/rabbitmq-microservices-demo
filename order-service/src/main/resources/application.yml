@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: order-service
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:password}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: auto
+        concurrency: 3
+        retry:
+          enabled: true
+          initial-interval: 1000
+          max-attempts: 3
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.example.orderservice: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  rabbitmq:
+    host: ${RABBITMQ_HOST:rabbitmq}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="order-service" />
+        <module name="common-models" />
+        <module name="order-service (1)" />
+        <module name="notification-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="inventory-service" target="17" />
+      <module name="inventory-service.main" target="17" />
+      <module name="inventory-service.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-models" options="-parameters" />
+      <module name="inventory-service" options="-parameters" />
+      <module name="inventory-service.main" options="-parameters" />
+      <module name="inventory-service.test" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
+      <module name="order-service (1)" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: inventory-service
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:password}
+
+    listener:
+      simple:
+        acknowledge-mode: auto
+        concurrency: 2
+        max-concurrency: 5
+        retry:
+          enabled: true
+          initial-interval: 1000
+          max-attempts: 3
+          max-interval: 10000
+          multiplier: 2.0
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.example.inventoryservice: DEBUG
+    org.springframework.amqp: INFO

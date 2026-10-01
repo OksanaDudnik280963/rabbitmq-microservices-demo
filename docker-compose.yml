@@ -1,0 +1,67 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - rabbitmq-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  order-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.order-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.inventory-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.notification-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbitmq-network
+
+networks:
+  rabbitmq-network:
+    driver: bridge
