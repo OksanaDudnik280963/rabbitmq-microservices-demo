@@ -1,7 +1,11 @@
 package com.example.orderservice.config;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -81,19 +85,26 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    public MessageConverter messageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 1. Register Java 8 date/time support (LocalDateTime, LocalDate, etc.)
+        objectMapper.registerModule(new JavaTimeModule());
+        // 2. Serialize dates as ISO-8601 strings rather than numeric timestamps
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter(objectMapper);
+
+        // 3. Configure trusted packages for deserialization
+        DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
+        typeMapper.setTrustedPackages("com.example.commonmodels", "com.example.*");
+        converter.setJavaTypeMapper(typeMapper);
+
+        return converter;
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        rabbitTemplate.setMandatory(true);
-        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
-            if (ack) System.out.println("Confirmed: " + correlationData);
-            else System.err.println("Failed: " + correlationData + " Cause: " + cause);
-        });
+        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
-    }
-}
+    }}

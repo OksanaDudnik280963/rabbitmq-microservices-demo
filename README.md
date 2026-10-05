@@ -96,11 +96,11 @@ mvn spring-boot:run
 
 ---
 
-### Testing the Workflow
+## Testing the Workflow
 
 Once the services are running, test an end-to-end event flow:
 
-1. **Create an Order**:
+#### 1. **Create an Order**:
 ```bash
 curl -X POST http://localhost:8081/api/orders \
   -H "Content-Type: application/json" \
@@ -116,15 +116,136 @@ curl -X POST http://localhost:8081/api/orders \
 ```
 
 
-2. **Check Inventory Reduction**:
+#### 2. **Check Inventory Reduction**:
 ```bash
 curl http://localhost:8082/api/inventory
 
 ```
 
 
-3. **Check Sent Notifications**:
+#### 3. **Check Sent Notifications**:
 ```bash
 curl http://localhost:8083/api/notifications
 
+```
+
+##  Project Work in Postman:
+Запрос 1: Создание заказа (POST /api/orders)
+Method (Метод): POST
+
+URL: http://localhost:8081/api/orders
+
+
+YML
+
+Вкладка Headers:
+
+Key: Content-Type
+
+Value: application/json
+
+Вкладка Body:
+
+Выберите режим raw
+
+В выпадающем списке справа выберите JSON
+
+Вставьте тело запроса:
+
+```JSON
+{
+"customerId": "CUST-001",
+"customerName": "John Doe",
+"customerEmail": "john@example.com",
+"amount": 1200.00,
+"itemType": "LAPTOP",
+"quantity": 1
+}
+```
+Нажмите кнопку Send. В ответе должен вернуться статус 201 Created и сгенерированный orderId.
+##  Postman Answer:
+```
+POST http://localhost:8081/api/orders
+201
+369.46 ms
+Network
+Request Headers
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: e5151ea6-9b78-4301-9e91-2f5a17dd4466
+Content-Length: 156
+Host: localhost:8081
+User-Agent: PostmanRuntime/2.10.1
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Request Body
+Response Headers
+content-type: application/json
+transfer-encoding: chunked
+date: Mon, 05 Oct 2026 18:07:38 GMT
+keep-alive: timeout=60
+connection: keep-alive
+Response Body
+{"orderId":"ORD-1791223658148",
+"customerId":"CUST-001",
+"customerName":"John Doe",
+"customerEmail":"john@example.com",
+"amount":1200.0,"status":"PENDING",
+"itemType":"LAPTOP","quantity":1,
+"createdAt":"2026-10-05T18:07:38.148636105",
+"message":"Order created"}
+```
+
+
+JAVA
+
+Запрос 2: Проверка остатков на складе (GET /api/inventory)
+Method (Метод): GET
+
+URL: http://localhost:8082/api/inventory
+
+
+YML
+Ещё 1
+
+Вкладка Body: none (тело запроса не требуется)
+
+Нажмите Send. В ответе отобразится текущее количество товаров (например, количество LAPTOP уменьшится с 50 до 49).   
+JAVA
+Ещё 1
+
+Запрос 3: Проверка отправленных уведомлений (GET /api/notifications)
+Method (Метод): GET
+
+URL: http://localhost:8083/api/notifications
+
+
+YML
+Ещё 1
+
+Вкладка Body: none (тело запроса не требуется)
+
+Нажмите Send. В ответе отобразится список уведомлений с событием ORDER_CREATED для созданного заказа.   
+JAVA
+Ещё 1
+
+Быстрый импорт через cURL в Postman
+Чтобы не вводить параметры вручную:
+
+В верхнем левом углу Postman нажмите кнопку Import.
+
+Вставьте исходную команду 
+
+curl -X POST http://localhost:8081/api/orders 
+
+в поле ввода.
+
+Postman автоматически заполнит метод, адрес, заголовки и JSON-тело.
+
+##  Docker commands for start project
+
+```bash
+docker-compose down
+docker-compose up --build
 ```

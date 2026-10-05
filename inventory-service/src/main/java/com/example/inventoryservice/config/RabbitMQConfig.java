@@ -1,5 +1,8 @@
 package com.example.inventoryservice.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -106,10 +109,19 @@ public class RabbitMQConfig {
 
     @Bean
     public MessageConverter messageConverter() {
-        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 1. Register Java 8 date/time support (LocalDateTime, LocalDate, etc.)
+        objectMapper.registerModule(new JavaTimeModule());
+        // 2. Serialize dates as ISO-8601 strings rather than numeric timestamps
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter(objectMapper);
+
+        // 3. Configure trusted packages for deserialization
         DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
         typeMapper.setTrustedPackages("com.example.commonmodels", "com.example.*");
         converter.setJavaTypeMapper(typeMapper);
+
         return converter;
     }
 
