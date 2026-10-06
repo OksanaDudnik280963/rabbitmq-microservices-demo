@@ -114,7 +114,6 @@ public class RabbitMQConfig {
         objectMapper.registerModule(new JavaTimeModule());
         // 2. Serialize dates as ISO-8601 strings rather than numeric timestamps
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter(objectMapper);
 
         // 3. Configure trusted packages for deserialization

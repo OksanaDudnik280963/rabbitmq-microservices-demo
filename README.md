@@ -154,12 +154,16 @@ Value: application/json
 
 ```JSON
 {
-"customerId": "CUST-001",
-"customerName": "John Doe",
-"customerEmail": "john@example.com",
-"amount": 1200.00,
-"itemType": "LAPTOP",
-"quantity": 1
+
+  "customerId": "CUST-001",
+  "customerName": "John Doe",
+  "customerEmail": "john@example.com",
+  "productName": "LAPTOP",
+  "price": 1200.00,
+  "amount": 1200.00,
+  "email": "john@example.com",
+  "itemType": "LAPTOP",
+  "quantity": 1
 }
 ```
 Нажмите кнопку Send. В ответе должен вернуться статус 201 Created и сгенерированный orderId.
@@ -187,14 +191,18 @@ date: Mon, 05 Oct 2026 18:07:38 GMT
 keep-alive: timeout=60
 connection: keep-alive
 Response Body
-{"orderId":"ORD-1791223658148",
-"customerId":"CUST-001",
-"customerName":"John Doe",
-"customerEmail":"john@example.com",
-"amount":1200.0,"status":"PENDING",
-"itemType":"LAPTOP","quantity":1,
-"createdAt":"2026-10-05T18:07:38.148636105",
-"message":"Order created"}
+{
+  "orderId": "ORD-1791299940530",
+  "customerId": "CUST-001",
+  "customerName": "John Doe",
+  "customerEmail": "john@example.com",
+  "amount": 1200.0,
+  "status": "PENDING",
+  "itemType": "LAPTOP",
+  "quantity": 1,
+  "createdAt": "2026-10-06T15:19:00.536430579",
+  "message": "Order created"
+}
 ```
 
 
