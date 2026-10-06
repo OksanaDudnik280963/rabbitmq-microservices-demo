@@ -190,17 +190,17 @@ Click Save and Finish.
 
 Then click Start using Jenkins.
 
-![Jenkins started](./images/Jenkins%205.jpeg)
+![Jenkins ready](./images/Jenkins%205.jpeg)
 
 You’re now logged into Jenkins.
 
-![Jenkins started](./images/Jenkins%206.jpeg)
+![Jenkins management](./images/Jenkins%206.jpeg)
 
-![Jenkins started](./images/Jenkins%207.jpeg)
+![Jenkins plugins](./images/Jenkins%207.jpeg)
 
 Click Settings
 
-![Jenkins started](./images/Jenkins%208.jpeg)
+![Jenkins plugins](./images/Jenkins%208.jpeg)
 
 ## 12. Install Additional Plugins for Your Project
     You need extra plugins for Docker, Maven, Cucumber, etc.
@@ -212,7 +212,7 @@ Click Plugins.
 Click Available plugins.
 
 Search and install these plugins:
-
+```
 Pipeline
 
 Git
@@ -238,6 +238,7 @@ Cucumber Reports
 HTML Publisher
 
 Timestamper
+```
 
 You can search each by name, tick the checkbox, then click Install.
 
