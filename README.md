@@ -242,6 +242,22 @@ curl -X POST http://localhost:8081/api/orders
 в поле ввода.
 
 Postman автоматически заполнит метод, адрес, заголовки и JSON-тело.
+```Json
+{
+  "ORD-1791219377567": {
+    "orderId": "ORD-1791219377567",
+    "customerId": null,
+    "customerName": null,
+    "customerEmail": null,
+    "amount": 1200.0,
+    "status": "PENDING",
+    "itemType": null,
+    "quantity": null,
+    "createdAt": null,
+    "message": null
+  }
+}
+```
 
 ##  Docker commands for start project
 
